@@ -1,4 +1,4 @@
-## FBGrabber
+# FBGrabber
 
 Cross‑platform desktop app to download Facebook videos with quality selection, a managed download queue, progress indicators, and a clean modern UI.
 
@@ -109,5 +109,3 @@ Alternative packagers: Nuitka (smaller/faster), Briefcase (native installers), o
 ### Notes
 - YT‑DLP handles Facebook video extraction. If a video requires login, provide a cookies file via Settings.
 - Respect the content provider's Terms of Service and copyright laws in your jurisdiction.
-
-
