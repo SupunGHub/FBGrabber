@@ -1,0 +1,128 @@
+QWidget {
+  background: #101214;
+  color: #E6E6E6;
+  font-family: Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 12pt;
+}
+
+QLineEdit, QComboBox, QTableView, QTableWidget, QGroupBox,
+QPushButton, QMenuBar, QMenu {
+  background-color: #1B1F22;
+  border: 1px solid #2A2F34;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+QPushButton {
+  background-color: #2B6CB0;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+QPushButton:disabled {
+  background-color: #2A2F34;
+  color: #8B8F94;
+}
+QPushButton:hover {
+  background-color: #2F75BF;
+}
+
+QGroupBox {
+  margin-top: 16px;
+}
+QGroupBox::title {
+  subcontrol-origin: margin;
+  subcontrol-position: top left;
+  padding: 0 6px;
+  color: #8B8F94;
+}
+
+QHeaderView::section {
+  background: #161A1D;
+  border: 1px solid #2A2F34;
+  padding: 6px 8px;
+}
+
+QMenuBar {
+  background: #101214;
+}
+QMenuBar::item:selected {
+  background: #2A2F34;
+}
+
+QMenu::item:selected {
+  background: #2A2F34;
+}
+
+/* Ensure space for the dropdown arrow area */
+QComboBox {
+  padding-right: 36px;
+}
+
+/* Combo box dropdown area */
+QComboBox::drop-down {
+  subcontrol-origin: padding;
+  subcontrol-position: top right;
+  width: 28px;
+  border-left: 1px solid #2A2F34;
+  background: #1B1F22;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Use a custom chevron icon to avoid platform inconsistencies */
+QComboBox::down-arrow {
+  /* inline SVG data URI chevron */
+  image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23E6E6E6' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  width: 12px;
+  height: 8px;
+  margin-right: 10px;
+}
+QComboBox::down-arrow:on {
+  image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%232F75BF' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+
+/* Popup list for combo box */
+QComboBox QAbstractItemView {
+  background: #161A1D;
+  color: #E6E6E6;
+  border: 1px solid #2A2F34;
+  selection-background-color: #2A2F34;
+  selection-color: #FFFFFF;
+  outline: 0;
+}
+
+/* Modern scrollbars */
+QScrollBar:vertical {
+  background: #101214;
+  width: 12px;
+  margin: 0px;
+}
+QScrollBar::handle:vertical {
+  background: #2A2F34;
+  min-height: 28px;
+  border-radius: 6px;
+}
+QScrollBar::handle:vertical:hover {
+  background: #3A4147;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+  height: 0px;
+}
+QScrollBar:horizontal {
+  background: #101214;
+  height: 12px;
+  margin: 0px;
+}
+QScrollBar::handle:horizontal {
+  background: #2A2F34;
+  min-width: 28px;
+  border-radius: 6px;
+}
+QScrollBar::handle:horizontal:hover {
+  background: #3A4147;
+}
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+  width: 0px;
+}
+
