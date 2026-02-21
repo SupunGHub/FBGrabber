@@ -8,7 +8,7 @@ from PySide6 import QtCore
 from yt_dlp import YoutubeDL
 
 from .models import FormatOption
-from .utils import ensure_unique_path, human_readable_bytes, human_readable_eta, sanitize_filename
+from .utils import clean_facebook_title, ensure_unique_path, human_readable_bytes, human_readable_eta, sanitize_filename
 
 
 class Downloader(QtCore.QObject):
@@ -31,7 +31,7 @@ class Downloader(QtCore.QObject):
         with YoutubeDL(opts) as ydl:
             info = ydl.extract_info(url, download=False)
 
-        title = info.get("title") or "Facebook Video"
+        title = clean_facebook_title(info.get("title") or "") or "Facebook Video"
         formats_raw = info.get("formats") or []
         formats: List[FormatOption] = []
         for f in formats_raw:
@@ -41,6 +41,7 @@ class Downloader(QtCore.QObject):
             if f.get("height"):
                 resolution = f"{f.get('height')}p"
             fps = f.get("fps")
+            tbr = f.get("tbr")
             fmt = FormatOption(
                 format_id=str(f.get("format_id")),
                 ext=(f.get("ext") or ""),
@@ -50,16 +51,17 @@ class Downloader(QtCore.QObject):
                 acodec=f.get("acodec"),
                 filesize=f.get("filesize") or f.get("filesize_approx"),
                 format_note=f.get("format_note"),
+                tbr=float(tbr) if tbr else None,
             )
             formats.append(fmt)
 
-        # Prefer higher resolution first
+        # Prefer higher resolution first, then bitrate, then filesize
         def sort_key(x: FormatOption):
             try:
                 height = int(x.resolution.replace("p", "")) if x.resolution else 0
             except Exception:
                 height = 0
-            return (height, x.fps or 0, x.filesize or 0)
+            return (height, x.fps or 0, x.tbr or 0, x.filesize or 0)
 
         formats.sort(key=sort_key, reverse=True)
         return title, formats

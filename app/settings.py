@@ -17,6 +17,7 @@ class AppSettings:
     download_dir: Path
     max_concurrent_downloads: int = 2
     cookies_file: Optional[Path] = None
+    theme: str = "system"  # "system", "light", or "dark"
 
     @staticmethod
     def default_download_dir() -> Path:
@@ -41,10 +42,12 @@ class AppSettings:
                 cookies_raw = data.get("cookies_file")
                 cookies_path = Path(cookies_raw) if cookies_raw else None
                 max_concurrent = int(data.get("max_concurrent_downloads", 2))
+                theme = data.get("theme", "system")
                 download_dir.mkdir(parents=True, exist_ok=True)
                 return cls(download_dir=download_dir,
                            max_concurrent_downloads=max_concurrent,
-                           cookies_file=cookies_path)
+                           cookies_file=cookies_path,
+                           theme=theme)
             except Exception:
                 # Fallback to defaults on parse error
                 pass

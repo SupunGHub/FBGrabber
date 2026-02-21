@@ -25,6 +25,25 @@ class FormatOption:
     acodec: Optional[str]
     filesize: Optional[int]
     format_note: Optional[str]
+    tbr: Optional[float] = None
+
+    @property
+    def has_video(self) -> bool:
+        return bool(self.vcodec and self.vcodec != "none")
+
+    @property
+    def has_audio(self) -> bool:
+        return bool(self.acodec and self.acodec != "none")
+
+    @property
+    def stream_type(self) -> str:
+        if self.has_video and self.has_audio:
+            return "Video + Audio"
+        if self.has_video:
+            return "Video Only"
+        if self.has_audio:
+            return "Audio Only"
+        return ""
 
     def display_text(self) -> str:
         parts: List[str] = []
@@ -32,10 +51,8 @@ class FormatOption:
             parts.append(self.resolution)
         if self.fps:
             parts.append(f"{self.fps}fps")
-        if self.vcodec and self.vcodec != "none":
-            parts.append(self.vcodec)
-        if self.acodec and self.acodec != "none":
-            parts.append(self.acodec)
+        if self.tbr:
+            parts.append(f"{self.tbr:.0f}kbps")
         if self.filesize:
             size_mb = self.filesize / (1024 * 1024)
             parts.append(f"{size_mb:.1f} MB")
@@ -43,7 +60,12 @@ class FormatOption:
             parts.append(self.ext)
         if self.format_note:
             parts.append(self.format_note)
-        return " • ".join(parts)
+        else:
+            # Add stream type label when there's no format_note
+            st = self.stream_type
+            if st:
+                parts.append(st)
+        return " · ".join(parts)
 
 
 @dataclass

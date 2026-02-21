@@ -7,6 +7,32 @@ from pathlib import Path
 
 INVALID_CHARS = r"[^\w\-\.\(\) \[\]]+"
 
+# Patterns to strip from Facebook video titles
+_FB_META_PATTERNS = [
+    # "1.6K views" / "39 reactions" / "123 comments" / "45 shares" / "12 likes"
+    re.compile(r"\d[\d.,]*[KkMm]?\s*(?:views|reactions|comments|shares|likes)", re.IGNORECASE),
+    # Separators left behind: leading "·" or "|"
+    re.compile(r"^[\s·|]+"),
+    # Trailing separators
+    re.compile(r"[\s·|]+$"),
+]
+
+
+def clean_facebook_title(title: str) -> str:
+    """Remove Facebook metadata (views, reactions, etc.) from a video title."""
+    if not title:
+        return title
+    cleaned = title
+    # Strip metric patterns
+    for pat in _FB_META_PATTERNS[:1]:
+        cleaned = pat.sub("", cleaned)
+    # Clean up leftover separators between removed parts
+    cleaned = re.sub(r"\s*[·|]\s*[·|]\s*", " | ", cleaned)
+    # Strip leading/trailing separators and whitespace
+    cleaned = re.sub(r"^[\s·|]+", "", cleaned)
+    cleaned = re.sub(r"[\s·|]+$", "", cleaned)
+    return cleaned.strip() or title
+
 
 def sanitize_filename(name: str, max_length: int = 180) -> str:
     name = name.strip()
